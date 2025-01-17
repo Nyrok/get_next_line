@@ -6,7 +6,7 @@
 /*   By: hkonte <hkonte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 11:30:54 by hkonte            #+#    #+#             */
-/*   Updated: 2025/01/17 11:54:18 by hkonte           ###   ########.fr       */
+/*   Updated: 2025/01/17 12:30:52 by hkonte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 #  define BUFFER_SIZE 1
 # endif
 # include <stdlib.h>
+# include <unistd.h>
 # include <fcntl.h>
 
 char	*get_next_line(int fd);
+size_t	ft_strlcat(char *dest, const char *src, size_t size);
+size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 #endif
