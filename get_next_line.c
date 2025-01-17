@@ -6,9 +6,11 @@
 /*   By: hkonte <hkonte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 11:29:47 by hkonte            #+#    #+#             */
-/*   Updated: 2025/01/17 11:30:42 by hkonte           ###   ########.fr       */
+/*   Updated: 2025/01/17 11:49:13 by hkonte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "get_next_line.h"
 
 char	*get_next_line(int fd)
 {
