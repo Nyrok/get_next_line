@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkonte <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hkonte <hkonte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 12:04:21 by hkonte            #+#    #+#             */
 /*   Updated: 2025/01/17 12:29:55 by hkonte           ###   ########.fr       */
