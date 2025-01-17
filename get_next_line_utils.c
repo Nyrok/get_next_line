@@ -12,7 +12,7 @@
 
 #include "get_next_line.h"
 
-static size_t	ft_strlen(const char *str)
+size_t	ft_strlen(const char *str)
 {
 	size_t	i;
 
@@ -55,4 +55,17 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 	while (src[i])
 		i++;
 	return (i);
+}
+
+char	*ft_strchr(const char *str, const char c)
+{
+	while (*str)
+	{
+		if (*str == c)
+			return ((char *)str);
+		str++;
+	}
+	if (c == '\0')
+		return ((char *)str);
+	return (NULL);
 }
