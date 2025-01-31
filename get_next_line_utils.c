@@ -22,43 +22,10 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-size_t	ft_strlcat(char *dest, const char *src, size_t size)
-{
-	size_t	i;
-	size_t	n;
-
-	n = ft_strlen(dest);
-	i = 0;
-	while (src[i] != '\0' && n + i + 1 < size)
-	{
-		dest[n + i] = src[i];
-		i++;
-	}
-	dest[n + i] = '\0';
-	if (n <= size)
-		return (n + ft_strlen(src));
-	return (size + ft_strlen(src));
-}
-
-size_t	ft_strlcpy(char *dest, const char *src, size_t size)
-{
-	size_t		i;
-
-	i = 0;
-	while (src[i] && i + 1 < size)
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	if (size > 0)
-		dest[i] = '\0';
-	while (src[i])
-		i++;
-	return (i);
-}
-
 char	*ft_strchr(const char *str, const char c)
 {
+	if (!str)
+		return (NULL);
 	while (*str)
 	{
 		if (*str == c)
@@ -68,4 +35,31 @@ char	*ft_strchr(const char *str, const char c)
 	if (c == '\0')
 		return ((char *)str);
 	return (NULL);
+}
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	size_t	i;
+	char	*result;
+
+	i = 0;
+	if (!s1)
+	{
+		s1 = malloc(sizeof(char));
+		s1[0] = '\0';
+	}
+	result = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	if (!result || !s1 || !s2)
+		return (NULL);
+	while (i < ft_strlen(s1) + ft_strlen(s2))
+	{
+		if (i < ft_strlen(s1))
+			result[i] = s1[i];
+		else
+			result[i] = s2[i - ft_strlen(s1)];
+		i++;
+	}
+	free(s1);
+	result[i] = '\0';
+	return (result);
 }

@@ -11,64 +11,97 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
-char	*parse_buffer_line(const char *buffer, int siz)
+static char	*parse_buffer_line(char *buffer)
 {
 	size_t	i;
-	char	*result;
+	char	*str;
 
 	i = 0;
-	result = malloc(siz * sizeof(char));
+	if (buffer[0] == '\0')
+		return (NULL);
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	str = malloc((i + 2) * sizeof(char));
+	if (!str)
+		return (NULL);
+	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 	{
-		result[i] = buffer[i];
+		str[i] = buffer[i];
 		i++;
 	}
-	return (result);
+	if (buffer[i] == '\n')
+	{
+		str[i] = buffer[i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
 }
 
-char	*parse_buffer_memory(char *buffer)
+static char	*parse_buffer_memory(char *buffer)
 {
 	size_t	i;
+	size_t	j;
+	char	*new_memory;
 
 	i = 0;
-	while (*buffer && *buffer != '\n')
-		buffer++;
-	return (buffer);
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	if (buffer[i] == '\0')
+	{
+		free(buffer);
+		return (NULL);
+	}
+	new_memory = malloc((ft_strlen(buffer) - i + 1) * sizeof(char));
+	if (!new_memory)
+		return (NULL);
+	i++;
+	j = 0;
+	while (buffer[i])
+		new_memory[j++] = buffer[i++];
+	new_memory[j] = '\0';
+	free(buffer);
+	return (new_memory);
+}
+
+static char	*update_memory(int fd, char *memory)
+{
+	char	*temp;
+	int		size;
+
+	size = 1;
+	temp = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!temp)
+		return (NULL);
+	while (!ft_strchr(memory, '\n') && size != 0)
+	{
+		size = read(fd, temp, BUFFER_SIZE);
+		if (size == -1)
+		{
+			free(temp);
+			free(memory);
+			return (NULL);
+		}
+		temp[size] = '\0';
+		memory = ft_strjoin(memory, temp);
+	}
+	free(temp);
+	return (memory);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*memory;
 	char		*line;
-	int			total_size;
-	char		buffer[BUFFER_SIZE];
-	int			size;
 
-	size = read(fd, &buffer, BUFFER_SIZE);
-	line = malloc(4096 * sizeof(char));
-	total_size = 0;
-	if (memory)
-	{
-		total_size = ft_strlcpy(line, memory, ft_strlen(memory));
-		memory = NULL;
-	}
-	while (size != 0)
-	{
-		if (size == -1)
-			break ;
-		total_size += size;
-		if (ft_strchr(buffer, '\n'))
-		{
-			memory = parse_buffer_memory(buffer);
-			ft_strlcat(line, parse_buffer_line(buffer, total_size), total_size + 1);
-			break ;
-		}
-		ft_strlcat(line, buffer, total_size + 1);
-		size = read(fd, &buffer, BUFFER_SIZE);
-	}
-	if (total_size > 0)
-		return (line);
-	return (NULL);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	memory = update_memory(fd, memory);
+	if (!memory)
+		return (NULL);
+	line = parse_buffer_line(memory);
+	memory = parse_buffer_memory(memory);
+	return (line);
 }
