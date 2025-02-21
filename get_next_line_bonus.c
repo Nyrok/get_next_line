@@ -93,15 +93,15 @@ static char	*update_memory(int fd, char *memory)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash[MAX_FD];
+	static char	*memory[MAX_FD];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	stash[fd] = update_memory(fd, stash[fd]);
-	if (!stash[fd])
+	memory[fd] = update_memory(fd, memory[fd]);
+	if (!memory[fd])
 		return (NULL);
-	line = parse_buffer_line(stash[fd]);
-	stash[fd] = parse_buffer_memory(stash[fd]);
+	line = parse_buffer_line(memory[fd]);
+	memory[fd] = parse_buffer_memory(memory[fd]);
 	return (line);
 }
